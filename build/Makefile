@@ -68,6 +68,26 @@ lib:
 
 	cp ../license.txt $(LIB_NAME)
 
+uncompressed:
+	@echo "Building the library (uncompressed)."
+	mkdir -p $(LIB_NAME)/script $(LIB_NAME)/resources/css
+	
+	jsbuild full.cfg -v -u -o $(LIB_NAME)/script/ -j GeoExt.js
+	echo "GeoExt.version='$(VERSION)';" >> $(LIB_NAME)/script/GeoExt.js 
+	
+	rsync -au --exclude=.svn `pwd`/../resources `pwd`/$(LIB_NAME)
+	rsync -au --exclude=.svn `pwd`/../lib `pwd`/$(LIB_NAME)
+	
+	for file in `find $(CSS_DIR) -name "*.css"`; do \
+	    csstidy $${file} --template=highest $${file} ; \
+	done ;
+	echo "" > $(ALL_CSS)
+	for filename in $(CSS_IMPORTS); do \
+	    cat $(CSS_DIR)/$${filename} >> $(ALL_CSS) ; \
+	done ;
+
+	cp ../license.txt $(LIB_NAME)
+
 zip: lib
 	@echo "Archiving the library."
 	-rm -f $(ZIP_NAME)
