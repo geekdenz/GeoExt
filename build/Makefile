@@ -20,6 +20,7 @@ help:
 	@echo "  dist     to make a zip archive of a standalone lib with examples"
 	@echo
 	@echo "Example use:"
+	@echo "  make uncompressed"
 	@echo "  make lib"
 	@echo "  make lib LIB_NAME=MyLib"
 	@echo "  make zip"
